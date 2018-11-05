@@ -1,4 +1,4 @@
-package janetv2;
+package janet;
 
 import java.util.Random;
 

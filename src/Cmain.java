@@ -1,5 +1,5 @@
 
-import janetv2.*;
+import janet.*;
 import java.io.File;
 import java.io.IOException;
 
