@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Network {
-    //Layer[] layers_;
     List<Layer> layers;
     private int anzLays;
     public double lr = 2.0;//Learning Rate, mutliplikator für die Ableitung (2.0 ist gut)

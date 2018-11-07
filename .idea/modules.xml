@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JanetV2.iml" filepath="$PROJECT_DIR$/JanetV2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Janet.iml" filepath="$PROJECT_DIR$/Janet.iml" />
     </modules>
   </component>
 </project>
