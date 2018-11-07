@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4154eabd-5b02-4795-9101-b8767e98dd3e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JanetV2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Janet.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/janet/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/janet/Network.java" afterDir="false" />
-    </list>
+    <list default="true" id="4154eabd-5b02-4795-9101-b8767e98dd3e" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +45,7 @@
     <session id="-968481167">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.16" value="1" />
           <entry key="project.opened" value="2" />
@@ -61,12 +55,14 @@
         <counts>
           <entry key="java" value="1" />
           <entry key="md" value="296" />
+          <entry key="txt" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="1" />
           <entry key="Markdown" value="296" />
+          <entry key="PLAIN_TEXT" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -238,7 +234,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541576943717" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541577044529" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -287,12 +283,20 @@
       <workItem from="1540836997379" duration="5404000" />
       <workItem from="1541399039377" duration="5050000" />
       <workItem from="1541438253879" duration="133000" />
-      <workItem from="1541576015883" duration="925000" />
+      <workItem from="1541576015883" duration="1035000" />
     </task>
+    <task id="LOCAL-00001" summary="renamed stuff">
+      <created>1541577043067</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1541577043067</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13840000" />
+    <option name="totallyTimeSpent" value="13950000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -305,7 +309,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26701966" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -342,6 +345,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="renamed stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed stuff" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Network.java" />
