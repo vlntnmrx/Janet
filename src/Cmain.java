@@ -10,11 +10,12 @@ public class Cmain {
         ImgLoader testDaten = new ImgLoader("MNIST/t10k-images.idx3-ubyte", "MNIST/t10k-labels.idx1-ubyte");
         System.out.println("---------START!---------");
 
-        netz.restoreFile(new File("saves/dumb_784321610_1000.dmp"));
-        netz.lr = 0.5;
-        netz.homeTrainer(daten, 100);
-        netz.test(testDaten, 1000);
-        //netz.dumbFile("saves/dumb_784321610_1000");
+        //netz.restoreFile(new File("saves/dumb_784321610_1000.dmp"));
+        //netz.lr = 0.5;
+        netz.batchTrainer(daten,50,100);
+        //netz.singleTrainer(daten,500);
+        netz.test(testDaten, 500);
+        netz.dumbFile("saves/dumb_784321610_30-100");
         System.out.println("----------ENDE!----------");
     }
 }

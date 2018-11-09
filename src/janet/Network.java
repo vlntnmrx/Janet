@@ -19,7 +19,7 @@ public class Network {
         this.anzLays = layers.size();
     }
 
-    void passTh() {
+    private void passTh() {
         int i;
         for (i = 1; i < this.anzLays; i++) {
             layers.get(i).process(this.layers.get(i - 1));
@@ -34,17 +34,29 @@ public class Network {
         }
     }
 
-    void learn(double[] exp) {
-        //Normal den Layer0 vorbereiten
-        passTh();
+    private void learnSingle(double[] exp) {
+        this.passTh();
         int i;
         for (i = 1; i < this.layers.size(); i++) {
-            this.layers.get(i).learn(this, exp);
+            this.layers.get(i).learnSingle(this, exp);
         }
     }
 
+    private void learnBatch(double[] exp) {
+        this.passTh();
+        int i;
+        for (i = 1; i < this.layers.size(); i++) {
+            this.layers.get(i).learnBatch(this, exp);
+        }
+    }
 
-    public void homeTrainer(ImgLoader imgs, int cycles) throws IOException {
+    private void applyLearning() {
+        for (int i = 1; i < this.layers.size(); i++) {
+            this.layers.get(i).applyLearning();
+        }
+    }
+
+    public void singleTrainer(ImgLoader imgs, int cycles) throws IOException {
         double[] exp = new double[10];
         int lab;
         int right = 0, wrong = 0, ist;
@@ -54,7 +66,7 @@ public class Network {
             Arrays.fill(exp, 0);
             exp[lab] = 1.0;
             this.prep(imgs);
-            this.learn(exp);
+            this.learnSingle(exp);
             fehler = 0;
             for (int j = 0; j < this.layers.get(this.layers.size() - 1).net.size(); j++) {
                 fehler += Math.pow(exp[j] - this.layers.get(this.layers.size() - 1).net.get(j).value, 2);
@@ -70,6 +82,36 @@ public class Network {
         }
         System.out.println("Verhältnis:" + (double) right / (double) wrong);
 
+    }
+
+    public void batchTrainer(ImgLoader imgs, int cycles, int size) throws IOException {
+        double[] exp = new double[10];
+        int lab;
+        int right = 0, wrong = 0, ist;
+        double fehler;
+        for (int i = 0; i < cycles; i++) {
+            for (int j = 0; j < size; j++) {
+                lab = imgs.readLabel();
+                Arrays.fill(exp, 0);
+                exp[lab] = 1.0;
+                this.prep(imgs);
+                this.learnBatch(exp);
+                fehler = 0;
+                for (int k = 0; k < this.layers.get(this.layers.size() - 1).net.size(); k++) {
+                    fehler += Math.pow(exp[k] - this.layers.get(this.layers.size() - 1).net.get(k).value, 2);
+                }
+                ist = (this.layers.get(this.layers.size() - 1).getBiggest()).id;
+                if (lab == ist) {
+                    System.out.println(i + "." + j + " - ------CORRECT-----\t\t F:" + fehler + " - S:" + lab + "/I:" + ist);
+                    right++;
+                } else {
+                    wrong++;
+                    System.out.println(i + "." + j + " - " + (double) right / (double) wrong + " \t F:" + fehler + " - S:" + lab + "/I:" + ist);
+                }
+            }
+            System.out.println("+++ Applying Batch +++");
+            this.applyLearning();
+        }
     }
 
     void prep(ImgLoader img) throws IOException {

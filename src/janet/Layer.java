@@ -3,6 +3,8 @@ package janet;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Dokumentation einfügen
+
 public class Layer {
     List<Neuron> net;
     private int id; //Layer Nummer, angefangen mit 0
@@ -47,10 +49,23 @@ public class Layer {
         return ret;
     }
 
-    void learn(Network netz, double[] exp) {
+    void learnSingle(Network netz, double[] exp) {
         //Lerne alle Neuronen des eigenen Layers ein
         for (int i = 0; i < this.net.size(); i++) {
             this.net.get(i).learnRec(netz, exp);
+            this.net.get(i).addDeltas();
+        }
+    }
+
+    void learnBatch(Network netz, double[] exp) {
+        for (int i = 0; i < this.net.size(); i++) {
+            this.net.get(i).learnRec(netz, exp);
+        }
+    }
+
+    void applyLearning() {
+        for (int i = 0; i < this.net.size(); i++) {
+            this.net.get(i).addDeltas();
         }
     }
 
