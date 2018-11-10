@@ -162,7 +162,7 @@ public class Network {
         inp.close();
     }
 
-    public void test(ImgLoader testDaten, int cycles) throws IOException {
+    public void test(ImgLoader testDaten, int cycles, boolean print) throws IOException {
         double[] exp = new double[10];
         int lab;
         int right = 0, wrong = 0;
@@ -178,11 +178,13 @@ public class Network {
                 fehler += Math.pow(exp[j] - this.layers.get(this.layers.size() - 1).net.get(j).value, 2);
             }
             if (lab == (this.layers.get(this.layers.size() - 1).getBiggest()).id) {
-                System.out.println(i + " - -----CORRECT-----\t\t F:" + fehler);
+                if (print)
+                    System.out.println(i + " - -----CORRECT-----\t\t F:" + fehler);
                 right++;
             } else {
                 wrong++;
-                System.out.println(i + " - " + (double) right / (double) wrong + " \t F:" + fehler);
+                if (print)
+                    System.out.println(i + " - " + (double) right / (double) wrong + " \t F:" + fehler);
             }
         }
         System.out.println("Treffsicherheit: " + ((double) right / (double) (right + wrong)) * 100.0 + "%");

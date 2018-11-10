@@ -18,7 +18,6 @@ class Neuron {
     Neuron(int id, int topLayer, int layerId) {
         Random rd = new Random();
         bias = 2 - rd.nextInt(4);
-        bdelta = 0;
         this.id = id;
         this.layerId = layerId;
         weights = new double[topLayer];
@@ -26,6 +25,7 @@ class Neuron {
         for (int i = 0; i < topLayer; i++) {
             weights[i] = ((double) rd.nextInt(100) / 100.0) - 0.5;
         }
+        resetDeltas();
     }
 
     private void resetDeltas() {
@@ -43,11 +43,6 @@ class Neuron {
         resetDeltas();
     }
 
-    /**
-     * Propagate foreward
-     *
-     * @param top
-     */
     void doit(Layer top) {
         int i;
         double sum = 0.0;
@@ -57,12 +52,6 @@ class Neuron {
         this.value = sig(sum + bias);
     }
 
-    /**
-     * Lenre Rekursiv alle Weights ein
-     *
-     * @param netz
-     * @param exp
-     */
     void learnRec(Network netz, double[] exp) {
         //System.out.println("Es lernt N:" + this.id + "aus L:" + this.layerId);
         //Für alle Weights, lerne...
@@ -128,22 +117,10 @@ class Neuron {
         return delta;
     }
 
-    /**
-     * Die Logistische Funktion
-     *
-     * @param eing
-     * @return
-     */
     double sig(double eing) {
         return (1.0 / (1.0 + Math.exp(0.0 - eing)));
     }
 
-    /**
-     * Die Ableitung der Logistischen Funktion
-     *
-     * @param eing
-     * @return
-     */
     double sigdiff(double eing) {
         return sig(eing) * (1.0 - sig(eing));
     }
