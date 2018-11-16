@@ -38,7 +38,7 @@ public class Layer {
 
     Neuron getBiggest() {
         int i;
-        Neuron ret = null;
+        Neuron ret = net.get(0); //Mit Neuron 0 Initialisieren
         double big = 0;
         for (i = 0; i < anzahl; i++) {
             if (net.get(i).value > big) {

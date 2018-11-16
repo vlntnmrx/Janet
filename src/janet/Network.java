@@ -10,6 +10,10 @@ public class Network {
     private int anzLays;
     public double lr = 2.0;//Learning Rate, mutliplikator für die Ableitung (2.0 ist gut)
 
+    public enum Activation {
+        ReLu, Sigm, Sign
+    }
+
     public Network(int... lays) {
         this.layers = new ArrayList<>();
         this.layers.add(new Layer(lays[0], null, 0));

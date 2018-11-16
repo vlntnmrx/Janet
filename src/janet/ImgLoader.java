@@ -8,11 +8,11 @@ import java.io.IOException;
 public class ImgLoader {
     private File dat;
     private FileInputStream datr;
-    int dateiPosition = 0;
+    private int dateiPosition = 0;
 
-    File label;
-    FileInputStream labelr;
-    int labelPosition = 0;
+    private File label;
+    private FileInputStream labelr;
+    private int labelPosition = 0;
 
     public ImgLoader(String datei, String labels) throws FileNotFoundException, IOException {
         dat = new File(datei);

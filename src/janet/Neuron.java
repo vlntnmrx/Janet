@@ -23,7 +23,7 @@ class Neuron {
         weights = new double[topLayer];
         deltas = new double[topLayer];
         for (int i = 0; i < topLayer; i++) {
-            weights[i] = ((double) rd.nextInt(100) / 100.0) - 0.5;
+            weights[i] = ((double) rd.nextInt(100) / 100.0);// - 0.5;
         }
         resetDeltas();
     }
@@ -49,7 +49,7 @@ class Neuron {
         for (i = 0; i < top.anzahl; i++) {
             sum += top.net.get(i).value * this.weights[i];
         }
-        this.value = sig(sum + bias);
+        this.value = act(sum + bias);
     }
 
     void learnRec(Network netz, double[] exp) {
@@ -61,11 +61,11 @@ class Neuron {
         if (this.layerId == layerAnz - 1) {
             for (int w = 0; w < this.weights.length; w++) {
                 //Leite alle Elemte der Fehlerfunktion ab
-                delta = (exp[id] - this.value) * sigdiff(this.value) * netz.layers.get(this.layerId - 1).net.get(w).value;
+                delta = (exp[id] - this.value) * actdiff(this.value) * netz.layers.get(this.layerId - 1).net.get(w).value;
                 this.deltas[w] += netz.lr * delta;
             }
             //Bias anpassen:
-            this.bdelta += netz.lr * (exp[id] - this.value) * sigdiff(this.value);
+            this.bdelta += netz.lr * (exp[id] - this.value) * actdiff(this.value);
         } else {
             //Normalfall, dass dieses Neuron tiefer liegt
             for (int w = 0; w < this.weights.length; w++) {
@@ -101,15 +101,15 @@ class Neuron {
             for (int w = 0; w < this.weights.length; w++) {
                 delta += this.weights[w] * netz.layers.get(this.layerId - 1).net.get(w).derive(netz, layer, id, weight, bias);
             }
-            delta = delta * sigdiff(this.value);
+            delta = delta * actdiff(this.value);
         }
         //Wenn das gesuchte Gewicht IM FOLGENDEN Layer liegt
         if (layer == this.layerId - 1) {
-            delta = sigdiff(this.value) * this.weights[id] * netz.layers.get(this.layerId - 1).net.get(id).derive(netz, layer, id, weight, bias);
+            delta = actdiff(this.value) * this.weights[id] * netz.layers.get(this.layerId - 1).net.get(id).derive(netz, layer, id, weight, bias);
         }
         //Wenn das gesuchte Gewicht in diesem Layer liegt
         if (layer == this.layerId) {
-            delta = sigdiff(this.value);
+            delta = actdiff(this.value);
             if (!bias) {
                 delta = delta * netz.layers.get(this.layerId - 1).net.get(weight).value;
             }
@@ -117,20 +117,39 @@ class Neuron {
         return delta;
     }
 
-    double sig(double eing) {
+    double act(double eing) {
+        switch (1) {
+            case 1:
+                return relu(eing);
+            default:
+                return sigm(eing);
+        }
+    }
+
+    double actdiff(double eing) {
+        switch (1) {
+            case 1:
+                return reludiff(eing);
+            default:
+                return sigmdiff(eing);
+        }
+    }
+
+
+    double sigm(double eing) {
         return (1.0 / (1.0 + Math.exp(0.0 - eing)));
     }
 
-    double sigdiff(double eing) {
-        return sig(eing) * (1.0 - sig(eing));
+    double sigmdiff(double eing) {
+        return act(eing) * (1.0 - act(eing));
     }
 
     double relu(double eing) {
-        return eing <= 0 ? 0 : eing;
+        return eing <= 0 ? 0.0 : eing;
     }
 
     double reludiff(double eing) {
-        return eing <= 0 ? 0 : 1;
+        return eing <= 0 ? 0.0 : 1;
     }
 
 
