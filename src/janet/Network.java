@@ -163,6 +163,7 @@ public class Network {
     }
 
     public void test(ImgLoader testDaten, int cycles, boolean print) throws IOException {
+        System.out.println("*****TESTING*****");
         double[] exp = new double[10];
         int lab;
         int right = 0, wrong = 0;

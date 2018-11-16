@@ -17,7 +17,7 @@ class Neuron {
 
     Neuron(int id, int topLayer, int layerId) {
         Random rd = new Random();
-        bias = 2 - rd.nextInt(4);
+        bias = 0;//2 - rd.nextInt(4);
         this.id = id;
         this.layerId = layerId;
         weights = new double[topLayer];
@@ -124,4 +124,14 @@ class Neuron {
     double sigdiff(double eing) {
         return sig(eing) * (1.0 - sig(eing));
     }
+
+    double relu(double eing) {
+        return eing <= 0 ? 0 : eing;
+    }
+
+    double reludiff(double eing) {
+        return eing <= 0 ? 0 : 1;
+    }
+
+
 }

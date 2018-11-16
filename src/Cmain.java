@@ -11,7 +11,7 @@ public class Cmain {
         System.out.println("---------START!---------");
 
         //netz.restoreFile(new File("saves/dumb_784321610_150-10.dmp"));
-        netz.lr = 1;
+        //netz.lr = 1;
         netz.batchTrainer(daten,150,20);
         //netz.singleTrainer(daten, 500);
         netz.test(testDaten, 500, false);
