@@ -23,7 +23,7 @@ class Neuron {
         weights = new double[topLayer];
         deltas = new double[topLayer];
         for (int i = 0; i < topLayer; i++) {
-            weights[i] = ((double) rd.nextInt(100) / 100.0);// - 0.5;
+            weights[i] = ((double) rd.nextInt(100) / 100.0) - 0.5;
         }
         resetDeltas();
     }
@@ -43,13 +43,14 @@ class Neuron {
         resetDeltas();
     }
 
-    void doit(Layer top) {
+    void doit(Layer top, Network netz) {
         int i;
         double sum = 0.0;
-        for (i = 0; i < top.anzahl; i++) {
+        for (i = 0; i < top.getAnzahl(); i++) {
             sum += top.net.get(i).value * this.weights[i];
         }
-        this.value = act(sum + bias);
+        //this.value = act(sum + bias, Network.Activa.ReLu);
+        this.value = netz.act.function(sum + bias);
     }
 
     void learnRec(Network netz, double[] exp) {
@@ -61,11 +62,13 @@ class Neuron {
         if (this.layerId == layerAnz - 1) {
             for (int w = 0; w < this.weights.length; w++) {
                 //Leite alle Elemte der Fehlerfunktion ab
-                delta = (exp[id] - this.value) * actdiff(this.value) * netz.layers.get(this.layerId - 1).net.get(w).value;
+                //delta = (exp[id] - this.value) * actdiff(this.value, netz.eact) * netz.layers.get(this.layerId - 1).net.get(w).value;
+                delta = (exp[id] - this.value) * netz.act.derive(this.value) * netz.layers.get(this.layerId - 1).net.get(w).value;
                 this.deltas[w] += netz.lr * delta;
             }
             //Bias anpassen:
-            this.bdelta += netz.lr * (exp[id] - this.value) * actdiff(this.value);
+            //this.bdelta += netz.lr * (exp[id] - this.value) * actdiff(this.value, netz.eact);
+            this.bdelta += netz.lr * (exp[id] - this.value) * netz.act.derive(this.value);
         } else {
             //Normalfall, dass dieses Neuron tiefer liegt
             for (int w = 0; w < this.weights.length; w++) {
@@ -101,15 +104,18 @@ class Neuron {
             for (int w = 0; w < this.weights.length; w++) {
                 delta += this.weights[w] * netz.layers.get(this.layerId - 1).net.get(w).derive(netz, layer, id, weight, bias);
             }
-            delta = delta * actdiff(this.value);
+            //delta = delta * actdiff(this.value, netz.eact);
+            delta = delta * netz.act.derive(this.value);
         }
         //Wenn das gesuchte Gewicht IM FOLGENDEN Layer liegt
         if (layer == this.layerId - 1) {
-            delta = actdiff(this.value) * this.weights[id] * netz.layers.get(this.layerId - 1).net.get(id).derive(netz, layer, id, weight, bias);
+            //delta = actdiff(this.value, netz.eact) * this.weights[id] * netz.layers.get(this.layerId - 1).net.get(id).derive(netz, layer, id, weight, bias);
+            delta = netz.act.derive(this.value) * this.weights[id] * netz.layers.get(this.layerId - 1).net.get(id).derive(netz, layer, id, weight, bias);
         }
         //Wenn das gesuchte Gewicht in diesem Layer liegt
         if (layer == this.layerId) {
-            delta = actdiff(this.value);
+            //delta = actdiff(this.value, netz.eact);
+            delta = netz.act.derive(this.value);
             if (!bias) {
                 delta = delta * netz.layers.get(this.layerId - 1).net.get(weight).value;
             }
@@ -117,21 +123,29 @@ class Neuron {
         return delta;
     }
 
-    double act(double eing) {
-        switch (1) {
-            case 1:
+    double fact(double eing, Network.Activa activa) {
+        switch (activa) {
+            case ReLu:
                 return relu(eing);
-            default:
+            case Pwl:
+                return pwl(eing);
+            case Sigm:
                 return sigm(eing);
+            default:
+                return 0;
         }
     }
 
-    double actdiff(double eing) {
-        switch (1) {
-            case 1:
+    double factdiff(double eing, Network.Activa activa) {
+        switch (activa) {
+            case ReLu:
                 return reludiff(eing);
-            default:
+            case Pwl:
+                return pwldiff(eing);
+            case Sigm:
                 return sigmdiff(eing);
+            default:
+                return 0;
         }
     }
 
@@ -141,16 +155,22 @@ class Neuron {
     }
 
     double sigmdiff(double eing) {
-        return act(eing) * (1.0 - act(eing));
+        return sigm(eing) * (1.0 - sigm(eing));
     }
 
     double relu(double eing) {
-        return eing <= 0 ? 0.0 : eing;
+        return eing <= -1 ? -1 : eing;
     }
 
     double reludiff(double eing) {
-        return eing <= 0 ? 0.0 : 1;
+        return eing <= -1 ? 0.0 : 1;
     }
 
+    double pwl(double eing) {
+        return eing > 1 ? 1 : (eing < 0 ? 0 : eing);
+    }
 
+    double pwldiff(double eing) {
+        return eing > 1 ? 0 : (eing < 0 ? 0 : 1);
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public class Layer {
     List<Neuron> net;
     private int id; //Layer Nummer, angefangen mit 0
-    public int anzahl;
+    private int anzahl;
 
     Layer(int anz, Layer topLayer, int id) {
         this.id = id;
@@ -29,10 +29,10 @@ public class Layer {
     }
 
 
-    void process(Layer top) {
+    void process(Layer top, Network netz) {
         int i;
         for (i = 0; i < this.net.size(); i++) {
-            net.get(i).doit(top);
+            net.get(i).doit(top, netz);
         }
     }
 
@@ -74,6 +74,10 @@ public class Layer {
         for (i = 0; i < anzahl; i++) {
             System.out.println(net.get(i).value);
         }
+    }
+
+    public int getAnzahl() {
+        return anzahl;
     }
 
 }

@@ -8,10 +8,14 @@ import java.util.List;
 public class Network {
     List<Layer> layers;
     private int anzLays;
-    public double lr = 2.0;//Learning Rate, mutliplikator für die Ableitung (2.0 ist gut)
+    Activation act;
+    Activa eact;
+    public double lr = 1.0;//Learning Rate, mutliplikator für die Ableitung
+    private double upperLim;
+    private double lowerLim;
 
-    public enum Activation {
-        ReLu, Sigm, Sign
+    public static enum Activa {
+        ReLu, Sigm, Sign, Pwl
     }
 
     public Network(int... lays) {
@@ -21,12 +25,21 @@ public class Network {
             this.layers.add(new Layer(lays[i], layers.get(i - 1), i));
         }
         this.anzLays = layers.size();
+        this.setLimits(-1, 1);
+        this.act = new PWLinear(this.lowerLim, this.upperLim);
+
+        this.eact = Activa.ReLu;
+    }
+
+    public void setLimits(double lower, double upper) {
+        this.upperLim = upper;
+        this.lowerLim = lower;
     }
 
     private void passTh() {
-        int i;
-        for (i = 1; i < this.anzLays; i++) {
-            layers.get(i).process(this.layers.get(i - 1));
+        //Layer 0 is the Input Layer
+        for (int i = 1; i < this.anzLays; i++) {
+            layers.get(i).process(this.layers.get(i - 1), this);
         }
     }
 
@@ -81,7 +94,7 @@ public class Network {
                 right++;
             } else {
                 wrong++;
-                System.out.println(i + " - " + (double) right / (double) wrong + " \t F:" + fehler + " - S:" + lab + "/I:" + ist);
+                //System.out.println(i + " - " + (double) right / (double) (wrong + right) + " \t F:" + fehler + " - S:" + lab + "/I:" + ist);
             }
         }
         System.out.println("Verhältnis:" + (double) right / (double) wrong);
@@ -110,7 +123,7 @@ public class Network {
                     right++;
                 } else {
                     wrong++;
-                    System.out.println(i + "." + j + " - " + (double) right / (double) wrong + " \t F:" + fehler + " - S:" + lab + "/I:" + ist);
+                    //System.out.println(i + "." + j + " - " + (double) right / (double) (wrong + right) + " \t F:" + fehler + " - S:" + lab + "/I:" + ist);
                 }
             }
             System.out.println("+++ Applying Batch +++");
@@ -167,7 +180,7 @@ public class Network {
     }
 
     public void test(ImgLoader testDaten, int cycles, boolean print) throws IOException {
-        System.out.println("*****TESTING*****");
+        System.out.println("*****TESTING: " + cycles + "*****");
         double[] exp = new double[10];
         int lab;
         int right = 0, wrong = 0;
